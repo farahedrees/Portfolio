@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farah's Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf8fc;
+    --surface: #f1ecf9;
+    --surface-line: #e3dbf0;
+    --ink: #29262e;
+    --muted: #6f6a7b;
+    --accent: #8874d8;
+    --accent-deep: #5b4b96;
+    --sprout: #8fae7d;
+
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Inter', sans-serif;
+  }
+  .contact-title {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--accent-deep);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; }
+  ::selection { background: var(--accent); color: #fff; }
+  :focus-visible { outline: 2px solid var(--accent-deep); outline-offset: 3px; }
+
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+
+  /* ---------- NAV ---------- */
+  nav {
+    position: sticky;
+    top: 0;
+    background: rgba(250, 248, 252, 0.85);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--surface-line);
+    z-index: 10;
+  }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 66px; }
+  .nav-mark {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 19px;
+    color: var(--accent-deep);
+  }
+  .nav-links { display: flex; gap: 30px; list-style: none; font-size: 14px; }
+  .nav-links a { text-decoration: none; color: var(--muted); transition: color 0.2s ease; }
+  .nav-links a:hover { color: var(--accent-deep); }
+
+  /* ---------- HERO ---------- */
+  .hero { position: relative; padding: 96px 0 88px; overflow: hidden; }
+
+  .bloom {
+    position: absolute;
+    top: -140px;
+    right: -120px;
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle at 40% 40%, rgba(136,116,216,0.28), rgba(136,116,216,0) 70%);
+    filter: blur(4px);
+    animation: breathe 9s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.08); opacity: 1; }
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 17px;
+    color: var(--accent-deep);
+    margin-bottom: 14px;
+    position: relative;
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(2.6rem, 5.2vw, 4.6rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    max-width: 14ch;
+    position: relative;
+  }
+
+  .hero p {
+    margin-top: 22px;
+    max-width: 44ch;
+    color: var(--muted);
+    font-size: 1.08rem;
+    position: relative;
+  }
+
+  .hero-links { margin-top: 34px; display: flex; gap: 14px; flex-wrap: wrap; position: relative; }
+  .hero-links a {
+    text-decoration: none;
+    font-size: 14px;
+    padding: 9px 16px;
+    border-radius: 100px;
+    border: 1px solid var(--surface-line);
+    background: #fff;
+    transition: border-color 0.2s ease, transform 0.15s ease;
+  }
+  .hero-links a:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+  /* ---------- HERO GRID + PHOTO ---------- */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .hero-photo {
+    position: relative;
+    width: 400px;
+    height: 460px;
+    flex-shrink: 0;
+  }
+  .hero-photo::before {
+    content: "";
+    position: absolute;
+    inset: -18px;
+    border-radius: 38% 62% 55% 45% / 45% 40% 60% 55%;
+    background: linear-gradient(160deg, var(--accent) 0%, var(--sprout) 100%);
+    opacity: 0.32;
+  }
+  .hero-photo img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    border-radius: 38% 62% 55% 45% / 45% 40% 60% 55%;
+    border: 5px solid #fff;
+    box-shadow: 0 20px 48px rgba(91, 75, 150, 0.22);
+  }
+
+  @media (max-width: 780px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-photo { width: 280px; height: 320px; margin: 0 auto; order: -1; }
+  }
+
+  /* ---------- DIVIDER ---------- */
+  .sprig-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 0 4px;
+  }
+  .sprig-divider .line { flex: 1; height: 1px; background: var(--surface-line); }
+  .sprig-divider svg { flex-shrink: 0; opacity: 0.8; }
+
+  /* ---------- SECTIONS ---------- */
+  .section { padding: 68px 0; }
+
+  .section-head { margin-bottom: 40px; position: relative; }
+  .section-head .kicker {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--accent-deep);
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+  .section-head h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.9rem;
+  }
+
+  .about-body { max-width: 60ch; color: var(--muted); font-size: 1.05rem; }
+  .about-body strong { color: var(--ink); font-weight: 600; }
+
+  /* ---------- PROJECTS ---------- */
+  .project-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+
+  .project-row {
+    display: grid;
+    grid-template-columns: 56px 200px 1fr;
+    gap: 24px;
+    padding: 28px 20px;
+    border-radius: 14px;
+    transition: background 0.2s ease;
+  }
+  .project-row:hover { background: var(--surface); }
+
+  .project-thumb {
+    width: 200px;
+    height: 140px;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--surface-line);
+    background: var(--surface);
+    box-shadow: 0 10px 24px rgba(91, 75, 150, 0.14);
+  }
+  .project-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .project-row .idx {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.6rem;
+    color: var(--accent);
+    padding-top: 2px;
+  }
+
+  .project-row h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+  .project-row p { color: var(--muted); font-size: 0.98rem; max-width: 54ch; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .tags span {
+    font-size: 12.5px;
+    padding: 5px 12px;
+    border-radius: 100px;
+    background: var(--surface);
+    border: 1px solid var(--surface-line);
+    color: var(--accent-deep);
+  }
+  .tags span.sprout { color: #4d6b40; background: #eef3ea; border-color: #dbe6d3; }
+
+  /* ---------- DOODLES ---------- */
+  .doodle {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0.75;
+    animation: float 4.5s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -7px; }
+  }
+
+  /* ---------- SCROLL REVEAL ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+  .project-row:nth-child(2) { transition-delay: 0.08s; }
+  .project-row:nth-child(3) { transition-delay: 0.16s; }
+
+  /* ---------- HERO LOAD-IN ---------- */
+  .hero-grid > div:first-child > * {
+    opacity: 0;
+    animation: rise 0.8s ease forwards;
+  }
+  .hero-eyebrow { animation-delay: 0.05s; }
+  .hero h1 { animation-delay: 0.18s; }
+  .hero p { animation-delay: 0.3s; }
+  .hero-links { animation-delay: 0.42s; }
+  .hero-photo {
+    opacity: 0;
+    animation: rise 0.9s ease forwards;
+    animation-delay: 0.2s;
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    position: relative;
+    border-top: 1px solid var(--surface-line);
+    padding: 40px 0 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--accent-deep); }
+
+  @media (max-width: 560px) {
+    .project-row { grid-template-columns: 1fr; gap: 16px; padding: 24px 12px; }
+    .project-row .idx { display: none; }
+    .project-thumb { width: 100%; height: 180px; order: -1; }
+    .nav-links { display: none; }
+    .bloom { width: 280px; height: 280px; top: -100px; right: -100px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="nav-mark">Farah Edrees</div>
+    <ul class="nav-links">
+      <li><a href="#about">about</a></li>
+      <li><a href="#skills">skills</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="bloom"></div>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-eyebrow">Hello, This is
+          <svg class="doodle" style="top:-6px; left:118px;" width="34" height="20" viewBox="0 0 34 20" fill="none">
+            <path d="M2 14C6 4 10 4 13 10C16 16 20 16 23 8C25 3 29 3 32 9" stroke="var(--sprout)" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h1>Farah Edrees</h1>
+        <p>A computer science student at Cairo University who likes building things from the ground up — machine learning models and data analysis — and seeing them actually work.
+          <svg class="doodle" style="top:14px; left:-38px;" width="30" height="30" viewBox="0 0 30 30" fill="none">
+            <g stroke="var(--accent)" stroke-width="1.2">
+              <ellipse cx="15" cy="8" rx="4" ry="6"/>
+              <ellipse cx="15" cy="22" rx="4" ry="6"/>
+              <ellipse cx="8" cy="15" rx="6" ry="4"/>
+              <ellipse cx="22" cy="15" rx="6" ry="4"/>
+            </g>
+            <circle cx="15" cy="15" r="2.6" fill="var(--sprout)" opacity="0.7"/>
+          </svg>
+        </p>
+        <div class="hero-links">
+          <a href="https://github.com/farahedrees" target="_blank">GitHub ↗</a>
+          <a href="https://www.linkedin.com/in/farah-edrees-" target="_blank">LinkedIn ↗</a>
+          <a href="https://wa.me/201159440072" target="_blank">WhatsApp ↗</a>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <img src="smm.jpeg" alt="Farah Edrees">
+        <svg class="doodle" style="bottom:-16px; left:-20px;" width="26" height="26" viewBox="0 0 26 26" fill="none">
+          <g stroke="var(--sprout)" stroke-width="1.1">
+            <ellipse cx="13" cy="7" rx="3.4" ry="5"/>
+            <ellipse cx="13" cy="19" rx="3.4" ry="5"/>
+            <ellipse cx="7" cy="13" rx="5" ry="3.4"/>
+            <ellipse cx="19" cy="13" rx="5" ry="3.4"/>
+          </g>
+          <circle cx="13" cy="13" r="2.2" fill="var(--accent)" opacity="0.7"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="sprig-divider">
+    <div class="line"></div>
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <path d="M10 18C10 18 3 13.5 3 8C3 4.5 6 2 10 2C14 2 17 4.5 17 8C17 13.5 10 18 10 18Z" stroke="#8874d8" stroke-width="1.2"/>
+      <path d="M10 5V15" stroke="#8fae7d" stroke-width="1.2"/>
+    </svg>
+    <div class="line"></div>
+  </div>
+</div>
+
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <svg class="doodle" style="top:-14px; right:8px;" width="26" height="26" viewBox="0 0 26 26" fill="none">
+        <path d="M13 2V10M13 16V24M2 13H10M16 13H24M5 5L9.5 9.5M20.5 5L16 9.5M5 21L9.5 16.5M20.5 21L16 16.5" stroke="var(--accent)" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+      <div class="kicker">A little about me</div>
+      <h2>What I care about</h2>
+    </div>
+    <p class="about-body reveal">I'm most interested in the space between an idea and a working system — <strong>taking a dataset or a spec and turning it into something people can actually use.</strong> Outside coursework, I compete in programming contests and coordinate events and partnerships as part of my university's Developer Student Club.</p>
+  </div>
+</section>
+
+<section class="section" id="skills">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <svg class="doodle" style="top:-12px; right:10px;" width="26" height="26" viewBox="0 0 26 26" fill="none">
+        <g stroke="var(--sprout)" stroke-width="1.1">
+          <ellipse cx="13" cy="7" rx="3.4" ry="5"/>
+          <ellipse cx="13" cy="19" rx="3.4" ry="5"/>
+          <ellipse cx="7" cy="13" rx="5" ry="3.4"/>
+          <ellipse cx="19" cy="13" rx="5" ry="3.4"/>
+        </g>
+        <circle cx="13" cy="13" r="2.2" fill="var(--accent)" opacity="0.7"/>
+      </svg>
+      <div class="kicker">My toolkit</div>
+      <h2>Skills & Technologies</h2>
+    </div>
+    <p class="about-body reveal">I work primarily in Python and Java, with experience in machine learning, data analysis, and desktop application development. I also have a strong foundation in algorithms and data structures, which I apply in competitive programming.</p>
+    <div class="tags reveal"><span>Python</span><span>Data Science</span><span>Machine Learning</span>
+    <span>Data Structures</span><span>Algorithms</span><span>SQL</span><span>PostgreSQL</span></div>
+    <div class="tags reveal">
+      <span class="sprout">Java</span><span class="sprout">JavaScript</span><span class="sprout">HTML</span><span class="sprout">CSS</span><span class="sprout">Git</span><span class="sprout">C++</span><span class="sprout">Competitive Programming</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="projects">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <svg class="doodle" style="top:-10px; right:6px;" width="30" height="24" viewBox="0 0 30 24" fill="none">
+        <path d="M3 21C3 21 4 8 15 4C26 8 27 21 27 21" stroke="var(--sprout)" stroke-width="1.3" stroke-linecap="round"/>
+        <path d="M15 4V21" stroke="var(--accent)" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+      <div class="kicker">Introducing</div>
+      <h2>My Work</h2>
+    </div>
+
+    <ul class="project-list">
+      <li class="project-row reveal">
+        <div class="idx">01</div>
+        <div class="project-thumb">
+          <img src="map.png" alt="PRISM crime risk map screenshot">
+        </div>
+        <div>
+          <h3>PRISM — Predictive Risk Intelligence and Spatial Map</h3>
+          <p>A Machine Learning model scoring crime risk across Chicago, paired with a routing layer that suggests patrol paths through high-risk zones.</p>
+          <div class="tags"><span>Python</span><span>XGBoost</span><span class="sprout">DBSCAN</span><span><a href="https://github.com/farahedrees/Crime-Risk-Prediction" target="_blank">View Project</a></span></div>
+        </div>
+      </li>
+
+      <li class="project-row reveal">
+        <div class="idx">02</div>
+        <div class="project-thumb">
+          <img src="prison.png" alt="Prison Management System screenshot">
+        </div>
+        <div>
+          <h3>Prison Management System</h3>
+          <p>A desktop records app for prisoners, cells, and staff, built on a clean MVC structure with JavaFX views.</p>
+          <div class="tags"><span>Java</span><span>JavaFX</span><span><a href="https://github.com/farahedrees/Prisonsystem" target="_blank">View Project</a></span></div>
+        </div>
+      </li>
+
+      <li class="project-row reveal">
+        <div class="idx">03</div>
+        <div class="project-thumb">
+          <img src="Salary.png" alt="Salary Prediction project screenshot">
+        </div>
+        <div>
+          <h3>Salary Prediction</h3>
+          <p>Model comparison and tuning on a tech-salaries dataset, on its way to a small deployed app.</p>
+          <div class="tags"><span>Python</span><span class="sprout">scikit-learn</span><span>Pandas</span><span>NumPy</span><span>XGBoost</span><span>Matplotlib</span><span>Seaborn</span>
+            <span><a href="https://github.com/farahedrees/AI-Salary-Prediction" target="_blank">View Project</a></span></div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<footer id="contact">
+  <svg class="doodle" style="top:6px; left:50%; transform:translateX(-50%);" width="22" height="22" viewBox="0 0 22 22" fill="none">
+    <circle cx="11" cy="11" r="2.2" fill="var(--accent)" opacity="0.6"/>
+    <circle cx="11" cy="5" r="3" stroke="var(--sprout)" stroke-width="1.1"/>
+    <circle cx="11" cy="17" r="3" stroke="var(--sprout)" stroke-width="1.1"/>
+    <circle cx="5" cy="11" r="3" stroke="var(--sprout)" stroke-width="1.1"/>
+    <circle cx="17" cy="11" r="3" stroke="var(--sprout)" stroke-width="1.1"/>
+  </svg>
+  <div class="wrap" style="display:flex; justify-content:space-between; width:100%;">
+    <div class="contact-title">Let's connect!</div>
+    <a href="mailto:yfarah714@gmail.com?subject=Let's connect">Email</a>
+    <a href="https://wa.me/201159440072" target="_blank">WhatsApp</a>
+    <a href="https://www.linkedin.com/in/farah-edrees-" target="_blank">LinkedIn</a>
+    <a href="#">Back to top ↑</a>
+    <div>© 2026 Farah Edrees</div>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
