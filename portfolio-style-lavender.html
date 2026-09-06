@@ -33,6 +33,8 @@
 
   body {
     background: var(--bg);
+    background-image: radial-gradient(var(--surface-line) 1px, transparent 1px);
+    background-size: 28px 28px;
     color: var(--ink);
     font-family: var(--font-body);
     line-height: 1.65;
@@ -173,7 +175,12 @@
   .sprig-divider svg { flex-shrink: 0; opacity: 0.8; }
 
   /* ---------- SECTIONS ---------- */
-  .section { padding: 68px 0; }
+  .section { padding: 68px 0; position: relative; }
+  .section.band {
+    background: linear-gradient(180deg, rgba(241,236,249,0.7), rgba(241,236,249,0.35));
+    border-top: 1px solid var(--surface-line);
+    border-bottom: 1px solid var(--surface-line);
+  }
 
   .section-head { margin-bottom: 40px; position: relative; }
   .section-head .kicker {
@@ -192,12 +199,45 @@
   .about-body { max-width: 60ch; color: var(--muted); font-size: 1.05rem; }
   .about-body strong { color: var(--ink); font-weight: 600; }
 
+  /* ---------- TIMELINE ---------- */
+  .timeline { position: relative; padding-left: 28px; margin-top: 8px; }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 5px; top: 6px; bottom: 6px;
+    width: 1.5px;
+    background: var(--surface-line);
+  }
+  .timeline-item { position: relative; padding-bottom: 32px; }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -28px; top: 4px;
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--surface);
+  }
+  .timeline-item .role {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.1rem;
+  }
+  .timeline-item .when {
+    font-size: 13px;
+    color: var(--accent-deep);
+    font-family: var(--font-display);
+    font-style: italic;
+    margin-top: 2px;
+  }
+
   /* ---------- PROJECTS ---------- */
   .project-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
 
   .project-row {
     display: grid;
-    grid-template-columns: 56px 200px 1fr;
+    grid-template-columns: 44px 200px 1fr;
     gap: 24px;
     padding: 28px 20px;
     border-radius: 14px;
@@ -223,11 +263,25 @@
 
   .project-row .idx {
     font-family: var(--font-display);
-    font-style: italic;
-    font-weight: 500;
-    font-size: 1.6rem;
-    color: var(--accent);
-    padding-top: 2px;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--accent-deep);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--surface-line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .project-thumb {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .project-row:hover .project-thumb {
+    transform: scale(1.03);
+    box-shadow: 0 16px 32px rgba(91, 75, 150, 0.2);
   }
 
   .project-row h3 {
@@ -294,15 +348,29 @@
   footer {
     position: relative;
     border-top: 1px solid var(--surface-line);
-    padding: 40px 0 56px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background: var(--surface);
+    padding: 48px 0 40px;
     font-size: 13.5px;
     color: var(--muted);
   }
-  footer a { text-decoration: none; }
-  footer a:hover { color: var(--accent-deep); }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .footer-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .footer-links a {
+    text-decoration: none;
+    font-size: 13.5px;
+    padding: 8px 16px;
+    border-radius: 100px;
+    border: 1px solid var(--surface-line);
+    background: #fff;
+    transition: border-color 0.2s ease, transform 0.15s ease;
+  }
+  .footer-links a:hover { border-color: var(--accent); transform: translateY(-1px); color: var(--accent-deep); }
 
   @media (max-width: 560px) {
     .project-row { grid-template-columns: 1fr; gap: 16px; padding: 24px 12px; }
@@ -391,11 +459,12 @@
       <div class="kicker">A little about me</div>
       <h2>What I care about</h2>
     </div>
-    <p class="about-body reveal">I'm most interested in the space between an idea and a working system — <strong>taking a dataset or a spec and turning it into something people can actually use.</strong> Outside coursework, I compete in programming contests and coordinate events and partnerships as part of my university's Developer Student Club.</p>
+    <p class="about-body reveal">I'm passionate about Data Science, Machine Learning, and AI. I’m especially interested in using data to uncover patterns, build predictive models, and solve real-world problems. I’m constantly learning and experimenting with new technologies while building projects that turn ideas into practical solutions. I like taking a dataset or a spec and turning it into something people can actually use.
+    Outside coursework, I compete in programming contests and coordinate events and partnerships as part of my university's Developer Student Club.</p>
   </div>
 </section>
 
-<section class="section" id="skills">
+<section class="section band" id="skills">
   <div class="wrap">
     <div class="section-head reveal">
       <svg class="doodle" style="top:-12px; right:10px;" width="26" height="26" viewBox="0 0 26 26" fill="none">
@@ -415,6 +484,39 @@
     <span>Data Structures</span><span>Algorithms</span><span>SQL</span><span>PostgreSQL</span></div>
     <div class="tags reveal">
       <span class="sprout">Java</span><span class="sprout">JavaScript</span><span class="sprout">HTML</span><span class="sprout">CSS</span><span class="sprout">Git</span><span class="sprout">C++</span><span class="sprout">Competitive Programming</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="Experience">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <svg class="doodle" style="top:-12px; right:10px;" width="26" height="26" viewBox="0 0 26 26" fill="none">
+        <g stroke="var(--sprout)" stroke-width="1.1">
+          <ellipse cx="13" cy="7" rx="3.4" ry="5"/>
+          <ellipse cx="13" cy="19" rx="3.4" ry="5"/>
+          <ellipse cx="7" cy="13" rx="5" ry="3.4"/>
+          <ellipse cx="19" cy="13" rx="5" ry="3.4"/>
+        </g>
+        <circle cx="13" cy="13" r="2.2" fill="var(--accent)" opacity="0.7"/>
+      </svg>
+      <div class="kicker">My Experience</div>
+      <h2>Work & Education</h2>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="role">Bachelor of Science in Computer Science</div>
+        <div class="when">September 2024 – July 2028</div>
+        <div class="role">Cairo University, Egypt</div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="role">External Relations at DSC Cairo, Egypt</div>
+        <div class="when">November 2025 – Present</div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="role">Machine Learning Trainee at National Telecommunications Institute</div>
+        <div class="when">July 2026 – August 2026</div>
+      </div>
     </div>
   </div>
 </section>
@@ -479,12 +581,13 @@
     <circle cx="5" cy="11" r="3" stroke="var(--sprout)" stroke-width="1.1"/>
     <circle cx="17" cy="11" r="3" stroke="var(--sprout)" stroke-width="1.1"/>
   </svg>
-  <div class="wrap" style="display:flex; justify-content:space-between; width:100%;">
+  <div class="wrap footer-inner">
     <div class="contact-title">Let's connect!</div>
-    <a href="mailto:yfarah714@gmail.com?subject=Let's connect">Email</a>
-    <a href="https://wa.me/201159440072" target="_blank">WhatsApp</a>
-    <a href="https://www.linkedin.com/in/farah-edrees-" target="_blank">LinkedIn</a>
-    <a href="#">Back to top ↑</a>
+    <div class="footer-links">
+      <a href="mailto:yfarah714@gmail.com?subject=Let's connect">Email</a>
+      <a href="https://wa.me/201159440072" target="_blank">WhatsApp</a>
+      <a href="https://www.linkedin.com/in/farah-edrees-" target="_blank">LinkedIn</a>
+    </div>
     <div>© 2026 Farah Edrees</div>
   </div>
 </footer>
