@@ -54,22 +54,55 @@
     background: rgba(250, 248, 252, 0.85);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--surface-line);
-    z-index: 10;
+    z-index: 20;
   }
-  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 66px; }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 66px; position: relative; }
   .nav-mark {
     font-family: var(--font-display);
     font-style: italic;
     font-weight: 500;
     font-size: 19px;
     color: var(--accent-deep);
+    background-image: linear-gradient(90deg, var(--accent-deep), var(--sprout), var(--accent-deep));
+    background-size: 220% auto;
+    background-position: 0% 50%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    transition: background-position 0.6s ease;
   }
+  .nav-mark:hover { background-position: 100% 50%; }
   .nav-links { display: flex; gap: 30px; list-style: none; font-size: 14px; }
-  .nav-links a { text-decoration: none; color: var(--muted); transition: color 0.2s ease; }
+  .nav-links a { text-decoration: none; color: var(--muted); transition: color 0.2s ease; position: relative; }
+  .nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 100%; bottom: -4px;
+    height: 1.5px;
+    background: var(--accent);
+    transition: right 0.25s ease;
+  }
   .nav-links a:hover { color: var(--accent-deep); }
+  .nav-links a:hover::after { right: 0; }
+
+  .scroll-bar {
+    position: absolute;
+    left: 0; bottom: -1px;
+    height: 2px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--sprout));
+    transition: width 0.1s linear;
+  }
 
   /* ---------- HERO ---------- */
   .hero { position: relative; padding: 96px 0 88px; overflow: hidden; }
+
+  .hero-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
 
   .bloom {
     position: absolute;
@@ -81,11 +114,14 @@
     filter: blur(4px);
     animation: breathe 9s ease-in-out infinite;
     pointer-events: none;
+    z-index: 1;
   }
   @keyframes breathe {
     0%, 100% { transform: scale(1); opacity: 0.9; }
     50% { transform: scale(1.08); opacity: 1; }
   }
+
+  .hero .wrap { position: relative; z-index: 2; }
 
   .hero-eyebrow {
     font-family: var(--font-display);
@@ -116,15 +152,17 @@
 
   .hero-links { margin-top: 34px; display: flex; gap: 14px; flex-wrap: wrap; position: relative; }
   .hero-links a {
+    display: inline-block;
     text-decoration: none;
     font-size: 14px;
     padding: 9px 16px;
     border-radius: 100px;
     border: 1px solid var(--surface-line);
     background: #fff;
-    transition: border-color 0.2s ease, transform 0.15s ease;
+    transition: border-color 0.2s ease, transform 0.12s ease-out, box-shadow 0.2s ease;
+    will-change: transform;
   }
-  .hero-links a:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .hero-links a:hover { border-color: var(--accent); box-shadow: 0 8px 18px rgba(91,75,150,0.16); }
 
   /* ---------- HERO GRID + PHOTO ---------- */
   .hero-grid {
@@ -147,6 +185,11 @@
     border-radius: 38% 62% 55% 45% / 45% 40% 60% 55%;
     background: linear-gradient(160deg, var(--accent) 0%, var(--sprout) 100%);
     opacity: 0.32;
+    animation: morph 12s ease-in-out infinite;
+  }
+  @keyframes morph {
+    0%, 100% { border-radius: 38% 62% 55% 45% / 45% 40% 60% 55%; }
+    50% { border-radius: 55% 45% 40% 60% / 55% 60% 40% 45%; }
   }
   .hero-photo img {
     position: relative;
@@ -157,7 +200,9 @@
     border-radius: 38% 62% 55% 45% / 45% 40% 60% 55%;
     border: 5px solid #fff;
     box-shadow: 0 20px 48px rgba(91, 75, 150, 0.22);
+    transition: transform 0.4s ease;
   }
+  .hero-photo:hover img { transform: scale(1.03) rotate(-1deg); }
 
   @media (max-width: 780px) {
     .hero-grid { grid-template-columns: 1fr; }
@@ -218,6 +263,11 @@
     border-radius: 50%;
     background: var(--accent);
     box-shadow: 0 0 0 4px var(--surface);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .timeline-item:hover::before {
+    transform: scale(1.35);
+    box-shadow: 0 0 0 5px var(--surface), 0 0 0 8px rgba(136,116,216,0.18);
   }
   .timeline-item .role {
     font-family: var(--font-display);
@@ -237,7 +287,7 @@
 
   .project-row {
     display: grid;
-    grid-template-columns: 44px 200px 1fr;
+    grid-template-columns: 200px 1fr;
     gap: 24px;
     padding: 28px 20px;
     border-radius: 14px;
@@ -253,6 +303,9 @@
     border: 1px solid var(--surface-line);
     background: var(--surface);
     box-shadow: 0 10px 24px rgba(91, 75, 150, 0.14);
+    perspective: 600px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    will-change: transform;
   }
   .project-thumb img {
     width: 100%;
@@ -260,28 +313,8 @@
     object-fit: cover;
     display: block;
   }
-
-  .project-row .idx {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 1rem;
-    color: var(--accent-deep);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: var(--surface);
-    border: 1px solid var(--surface-line);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .project-thumb {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
   .project-row:hover .project-thumb {
-    transform: scale(1.03);
-    box-shadow: 0 16px 32px rgba(91, 75, 150, 0.2);
+    box-shadow: 0 18px 34px rgba(91, 75, 150, 0.22);
   }
 
   .project-row h3 {
@@ -300,8 +333,11 @@
     background: var(--surface);
     border: 1px solid var(--surface-line);
     color: var(--accent-deep);
+    transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
   }
+  .tags span:hover { transform: translateY(-2px); border-color: var(--accent); }
   .tags span.sprout { color: #4d6b40; background: #eef3ea; border-color: #dbe6d3; }
+  .tags a { text-decoration: none; font-weight: 500; }
 
   /* ---------- DOODLES ---------- */
   .doodle {
@@ -362,22 +398,27 @@
   }
   .footer-links { display: flex; gap: 10px; flex-wrap: wrap; }
   .footer-links a {
+    display: inline-block;
     text-decoration: none;
     font-size: 13.5px;
     padding: 8px 16px;
     border-radius: 100px;
     border: 1px solid var(--surface-line);
     background: #fff;
-    transition: border-color 0.2s ease, transform 0.15s ease;
+    transition: border-color 0.2s ease, transform 0.12s ease-out;
+    will-change: transform;
   }
-  .footer-links a:hover { border-color: var(--accent); transform: translateY(-1px); color: var(--accent-deep); }
+  .footer-links a:hover { border-color: var(--accent); color: var(--accent-deep); }
 
   @media (max-width: 560px) {
     .project-row { grid-template-columns: 1fr; gap: 16px; padding: 24px 12px; }
-    .project-row .idx { display: none; }
     .project-thumb { width: 100%; height: 180px; order: -1; }
     .nav-links { display: none; }
     .bloom { width: 280px; height: 280px; top: -100px; right: -100px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   }
 </style>
 </head>
@@ -392,10 +433,12 @@
       <li><a href="#projects">projects</a></li>
       <li><a href="#contact">contact</a></li>
     </ul>
+    <div class="scroll-bar" id="scrollBar"></div>
   </div>
 </nav>
 
 <header class="hero">
+  <canvas class="hero-canvas" id="networkCanvas"></canvas>
   <div class="bloom"></div>
   <div class="wrap">
     <div class="hero-grid">
@@ -538,7 +581,6 @@
 
     <ul class="project-list">
       <li class="project-row reveal">
-        <div class="idx">01</div>
         <div class="project-thumb">
           <img src="map.png" alt="PRISM crime risk map screenshot">
         </div>
@@ -550,7 +592,6 @@
       </li>
 
       <li class="project-row reveal">
-        <div class="idx">02</div>
         <div class="project-thumb">
           <img src="prison.png" alt="Prison Management System screenshot">
         </div>
@@ -562,7 +603,6 @@
       </li>
 
       <li class="project-row reveal">
-        <div class="idx">03</div>
         <div class="project-thumb">
           <img src="Salary.png" alt="Salary Prediction project screenshot">
         </div>
@@ -597,6 +637,7 @@
 </footer>
 
 <script>
+  // ---------- scroll reveal ----------
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -605,8 +646,120 @@
       }
     });
   }, { threshold: 0.15 });
-
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ---------- scroll progress bar under nav ----------
+  const scrollBar = document.getElementById('scrollBar');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    if (scrollBar) scrollBar.style.width = pct + '%';
+  });
+
+  // ---------- hero network animation (nodes clustering, like her spatial/ML work) ----------
+  (function () {
+    const canvas = document.getElementById('networkCanvas');
+    const hero = document.querySelector('.hero');
+    if (!canvas || !hero) return;
+    const ctx = canvas.getContext('2d');
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let w = 0, h = 0, points = [];
+    const mouse = { x: null, y: null };
+
+    function resize() {
+      w = hero.offsetWidth;
+      h = hero.offsetHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const count = Math.max(18, Math.min(48, Math.floor((w * h) / 16000)));
+      points = Array.from({ length: count }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.22,
+        vy: (Math.random() - 0.5) * 0.22
+      }));
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      for (const p of points) {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
+        if (mouse.x !== null) {
+          const dx = p.x - mouse.x, dy = p.y - mouse.y;
+          const d = Math.hypot(dx, dy);
+          if (d < 130 && d > 0.01) {
+            p.x += (dx / d) * 0.7;
+            p.y += (dy / d) * 0.7;
+          }
+        }
+      }
+      for (let i = 0; i < points.length; i++) {
+        for (let j = i + 1; j < points.length; j++) {
+          const dx = points[i].x - points[j].x, dy = points[i].y - points[j].y;
+          const d = Math.hypot(dx, dy);
+          if (d < 128) {
+            ctx.strokeStyle = `rgba(136,116,216,${0.16 * (1 - d / 128)})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(points[i].x, points[i].y);
+            ctx.lineTo(points[j].x, points[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      for (const p of points) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(91,75,150,0.5)';
+        ctx.fill();
+      }
+    }
+
+    function loop() {
+      draw();
+      if (!prefersReduced) requestAnimationFrame(loop);
+    }
+
+    window.addEventListener('resize', resize);
+    hero.addEventListener('mousemove', (e) => {
+      const r = hero.getBoundingClientRect();
+      mouse.x = e.clientX - r.left;
+      mouse.y = e.clientY - r.top;
+    });
+    hero.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
+
+    resize();
+    loop();
+  })();
+
+  // ---------- tilt on project thumbnails ----------
+  document.querySelectorAll('.project-thumb').forEach((el) => {
+    el.addEventListener('mousemove', (e) => {
+      const r = el.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      el.style.transform = `scale(1.04) rotateX(${(-y * 9).toFixed(2)}deg) rotateY(${(x * 9).toFixed(2)}deg)`;
+    });
+    el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+  });
+
+  // ---------- magnetic buttons ----------
+  document.querySelectorAll('.hero-links a, .footer-links a').forEach((btn) => {
+    btn.addEventListener('mousemove', (e) => {
+      const r = btn.getBoundingClientRect();
+      const x = e.clientX - r.left - r.width / 2;
+      const y = e.clientY - r.top - r.height / 2;
+      btn.style.transform = `translate(${(x * 0.18).toFixed(1)}px, ${(y * 0.35).toFixed(1)}px)`;
+    });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+  });
 </script>
 
 </body>
